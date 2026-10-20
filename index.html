@@ -1,35 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronometro de Ejercicio</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rutina de Saltos</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Rutina de Ejercicio</h1>
-        <div id="timer" class="timer">00:10</div>
-        <div id="status" class="status">Preparación</div>
-
-        <label for="restTimeInput">Descanso (segundos):</label>
-        <input type="number" id="restTimeInput" value="10" min="5" max="60">
-
-        <div id="total-time" class="total-time">
-            <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" 
-                 alt="Cronómetro" width="30" height="30" style="vertical-align: middle;">
-            Tiempo Total: 00:00
-        </div>    
-
-        <div class="buttons">
-            <button id="startButton">INICIAR</button>
-            <button id="pauseButton">PAUSA</button>
-            <button id="resetButton">RESET</button>
-        </div>
+<div class="container">
+    <h1>Rutina de Saltos</h1>
+    <p class="sub">¿Qué quieres hacer?</p>
+    <div class="menu">
+        <a class="btn" href="reloj.html">⏱ Reloj<small>Iniciar el entrenamiento con cronómetro</small></a>
+        <a class="btn" href="rutina.html">📋 Ver rutina<small>Mirar y configurar los bloques</small></a>
     </div>
-
-    <audio id="alertSound" src="alert.mp3"></audio>
-
-    <script src="script.js"></script>
+</div>
 </body>
 </html>

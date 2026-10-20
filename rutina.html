@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rutina</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <nav><a class="btn" href="index.html">Inicio</a><a class="btn" href="reloj.html">⏱ Reloj</a><a class="btn on" href="rutina.html">📋 Rutina</a></nav>
+    <h1 id="titulo">Rutina</h1>
+    <p class="sub" id="resumen"></p>
+
+    <div class="card"><ul class="list" id="lista"></ul></div>
+
+    <div class="card">
+        <div class="row2">
+            <div><label for="prep">Tiempo al iniciar (seg)</label><input type="number" id="prep" min="0"></div>
+            <div><label for="postRest">Prepárate tras descanso (seg)</label><input type="number" id="postRest" min="0"></div>
+        </div>
+        <div id="bloques"></div>
+        <div class="controls">
+            <button class="ghost" id="add">+ Bloque</button>
+            <button class="ghost" id="reset">Restaurar</button>
+        </div>
+    </div>
+    <a class="btn primary" style="display:block" href="reloj.html">⏱ Ir al reloj</a>
+</div>
+<script src="common.js"></script>
+<script>
+const dias = new URLSearchParams(location.search).get("dia");
+if (dias) document.getElementById("titulo").textContent = "Rutina del " + dias;
+
+let cfg = loadConfig();
+
+function num(v, min) { v = parseInt(v, 10); return isNaN(v) ? min : Math.max(min, v); }
+
+function render() {
+    document.getElementById("prep").value = cfg.prep;
+    document.getElementById("postRest").value = cfg.postRest;
+
+    document.getElementById("lista").innerHTML = cfg.blocks.map((b, i) =>
+        `<li><span>Bloque ${i + 1}: salto <b>${b.work}s</b> · descanso <b>${b.rest}s</b></span><span>× ${b.reps}</span></li>`).join("");
+    document.getElementById("resumen").textContent = "Duración total: " + fmt(totalSeconds(cfg));
+
+    document.getElementById("bloques").innerHTML = cfg.blocks.map((b, i) => `
+        <div class="block" data-i="${i}">
+            <div><label>Salto (s)</label><input type="number" min="1" data-k="work" value="${b.work}"></div>
+            <div><label>Descanso (s)</label><input type="number" min="0" data-k="rest" value="${b.rest}"></div>
+            <div><label>Veces</label><input type="number" min="1" data-k="reps" value="${b.reps}"></div>
+            <button class="del" data-del="${i}" aria-label="Borrar bloque">✕</button>
+        </div>`).join("");
+}
+
+function persist() { saveConfig(cfg); document.getElementById("resumen").textContent = "Duración total: " + fmt(totalSeconds(cfg)); }
+
+document.getElementById("bloques").addEventListener("input", e => {
+    const row = e.target.closest(".block"); if (!row) return;
+    const k = e.target.dataset.k;
+    cfg.blocks[row.dataset.i][k] = num(e.target.value, k === "rest" ? 0 : 1);
+    persist();
+});
+document.getElementById("bloques").addEventListener("change", render);
+document.getElementById("bloques").addEventListener("click", e => {
+    if (e.target.dataset.del === undefined || cfg.blocks.length < 2) return;
+    cfg.blocks.splice(+e.target.dataset.del, 1); persist(); render();
+});
+document.getElementById("prep").addEventListener("input", e => { cfg.prep = num(e.target.value, 0); persist(); });
+document.getElementById("postRest").addEventListener("input", e => { cfg.postRest = num(e.target.value, 0); persist(); });
+document.getElementById("add").addEventListener("click", () => {
+    const last = cfg.blocks[cfg.blocks.length - 1];
+    cfg.blocks.push({ ...last }); persist(); render();
+});
+document.getElementById("reset").addEventListener("click", () => { cfg = structuredClone(DEFAULT_CONFIG); persist(); render(); });
+render();
+</script>
+</body>
+</html>
