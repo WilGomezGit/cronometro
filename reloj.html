@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reloj</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="prep">
+<div class="container">
+    <nav><a class="btn" href="index.html">Inicio</a><a class="btn on" href="reloj.html">⏱ Reloj</a><a class="btn" href="rutina.html">📋 Rutina</a></nav>
+
+    <div class="clock">
+        <svg viewBox="0 0 200 200">
+            <circle class="track" cx="100" cy="100" r="90"/>
+            <circle class="bar" id="bar" cx="100" cy="100" r="90"/>
+        </svg>
+        <div class="inner">
+            <div class="phase" id="phase">Listo</div>
+            <div class="time" id="time">00:00</div>
+            <div class="round" id="round"></div>
+        </div>
+    </div>
+
+    <div class="next" id="next"></div>
+    <div class="flat"><div id="total"></div></div>
+    <div class="meta"><span id="elapsed">Transcurrido 00:00</span><span id="remaining">Restante 00:00</span></div>
+
+    <div class="controls">
+        <button class="primary" id="start">INICIAR</button>
+        <button id="pause" disabled>PAUSA</button>
+        <button class="ghost" id="reset">RESET</button>
+    </div>
+</div>
+<audio id="alertSound" src="alert.mp3"></audio>
+<script src="common.js"></script>
+<script src="reloj.js"></script>
+</body>
+</html>
